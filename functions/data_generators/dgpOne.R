@@ -37,7 +37,7 @@ dgpOne <- function(numTreated, numControls, trueTau) {
   
   Y <- x + w*trueTau + e
   
-  Z <- cbind(Y, x, w)
+  Z <- cbind(Y, x, w, sigmas)
   
   return(Z)
   
