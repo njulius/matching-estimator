@@ -37,7 +37,12 @@ dgpOne <- function(numTreated, numControls, trueTau) {
   
   Y <- x + w*trueTau + e
   
-  Z <- cbind(Y, x, w, sigmas)
+  # Generate mus
+  
+  mu1s <- x + trueTau
+  mu0s <- x
+  
+  Z <- cbind(Y, x, w, mu0s, mu1s, sigmas)
   
   return(Z)
   
