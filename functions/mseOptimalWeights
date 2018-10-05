@@ -1,0 +1,50 @@
+# MSE Optimal Weights
+# Niklaus Julius
+
+# Weights from unconstrained optimization
+
+mseOptimalWeights <- function(treatedArm, controlArm, trueTau, outputArm) {
+  
+  # Calculate product of variances to allow for leave-one-out products later
+  
+  prodTVars <- prod(treatedArm[,6])
+  prodCVars <- prod(controlArm[,6])
+  
+  # Calculate the leave-one-out products for each observation.
+  
+  looTVars <- prodTVars/treatedArm[,6]
+  looCVars <- prodCVars/controlArm[,6]
+  
+  # multiply the leave-one-out variance products by the left-out conditional mean
+  # to make the terms
+  
+  treatedSummand <- looTVars * treatedArm[,5]^2
+  controlSummand <- looCVars * controlArm[,4]^2
+  
+  # calculate the target mean counterfactual outcomes
+  
+  treatedCounterfact <- mean(treatedArm[,4])
+  controlCounterfact <- mean(controlArm[,5])
+  
+  # Calculate the optimal weights for each arm
+  
+  controlWeights <- treatedCounterfact * zControl[,4] * looCVars / (prodCVars + sum(controlSummand))
+  
+  treatedWeights <- controlCounterfact * zTreated[,5] * looTVars / (prodTVars + sum(treatedSummand))
+  
+  if(outputArm == 1) {
+    
+    augTreatedArm <- cbind(treatedArm, treatedWeights)
+    
+    return(augTreatedArm)
+    
+  } else {
+    
+    augControlArm <- cbind(controlArm, controlWeights)
+    
+    return(augControlArm)
+    
+  }
+  
+  
+}
