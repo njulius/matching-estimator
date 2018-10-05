@@ -1,34 +1,22 @@
 # Matching Estimator Implementation
 # Nik Julius
 
-treatedSplit <- function(Z, outcome, covariate, indicator) {
+treatedSplit <- function(Z) {
   
   # Take incoming dataset Z and column numbers for the outcome, covariate, and indicator
   # columns. Split dataset into treated and control arms, arrange columns appropriately
   # for later use, and return the treated arm. Control arm is discarded because controlSplit()
   # will do the same to generate the control arm.
   
-  Y <- Z[,outcome]
-  X <- Z[,covariate]
-  W <- Z[,indicator]
-  
-  cont <- cbind(Y,X,W)
-  
-  treatedArm <- cont[which(cont[,3] == 1),]
+  treatedArm <- Z[which(Z[,3] == 1),]
   
   return(treatedArm)
   
 }
 
-controlSplit <- function(Z, outcome, covariate, indicator) { 
+controlSplit <- function(Z) { 
   
-  Y <- Z[,outcome]
-  X <- Z[,covariate]
-  W <- Z[,indicator]
-  
-  cont <- cbind(Y,X,W)
-  
-  controlArm <- cont[which(cont[,3] == 0),]
+  controlArm <- Z[which(Z[,3] == 0),]
   
   return(controlArm)
   
